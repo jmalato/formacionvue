@@ -2,7 +2,8 @@
   <div class="tablero">
     <!-- TODO: Incluir celdas -->
     <Celda v-for="(celda, i) in celdas" :key="'celda' + i"
-      :x="celda.x" :y="celda.y" :mina="celda.mina">
+      ref="celdas"
+      :x="celda.x" :y="celda.y" :mina="celda.mina" :celdasVecinas="celdasVecinas(celda)">
     </Celda>
   </div>
 </template>
@@ -39,12 +40,31 @@ export default {
           })
         }
       }
-    }
+    },
+  
+   celdasVecinas(celda){
+     const self = this;
+     if(self.$refs.celdas){
+     let tvariable = self.$refs.celdas.filter(c => c.esVecina(celda));
+     console.log(tvariable);
+     return tvariable;
+     }
+    },
   },
+  
   created: function() {
       const self = this;
       self. inicializarTablero();
+    },
+   mounted: function() {
+      const self = this;
+      if(self.$refs.celdas){
+      self.$refs.celdas.forEach(c => {
+        c.addVecinas(self.celdasVecinas(c));
+      });
+      }
     }
+
 }
 </script>
 
