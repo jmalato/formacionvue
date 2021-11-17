@@ -1,10 +1,11 @@
 <template>
-  <div class="celda" :style= "estilos">
+  <div class="celda" :style= "estilos" @click= "consolelog"  > 
     <!-- TODO: Incluir celdas -->
       <!-- {{x}} | {{y}} | {{mina}} -->
 
-      <img v-if="mina" src="https://is5-ssl.mzstatic.com/image/thumb/Purple124/v4/d0/87/f6/d087f6eb-c54e-5af2-fc92-3c4b656af7e0/source/256x256bb.jpg">
-
+      <img v-if="mina" src="https://is5-ssl.mzstatic.com/image/thumb/Purple124/v4/d0/87/f6/d087f6eb-c54e-5af2-fc92-3c4b656af7e0/source/256x256bb.jpg" >
+      <span v-if= "!mina"> {{numeroMinas}} </span>
+      
   </div>
 </template>
 
@@ -13,7 +14,7 @@ export default {
   name: 'Celda',
   data() {
     return {
-      celdas: [],
+      celdasVecinas: [],
     }
   },
   props:{
@@ -25,24 +26,46 @@ export default {
     },
     mina: {
       type: Boolean
-    }
+    },
   },
+  
   
   computed:{
     estilos: function(){
       const self = this;
       let cadena = "top: " + (self.x * 50) + "px; left: " + (self.y * 50) + "px";
       return cadena;
-    }
-  },
+    },
+    numeroMinas: function(){
+      const self = this;
+      return self.celdasVecinas.filter(c => c.mina).length;
+    },
+ 
+ 
+ },
 
   methods:{
-    
-  },
-  created: function() {
+    esVecina(celda){
       const self = this;
-      self. inicializarTablero();
+      if(self.x === celda.x && self.y === celda.y) return false;
+      
+      if(Math.abs(self.x -celda.x) <= 1 && Math.abs(self.y -celda.y) <= 1 ) return true;
+      return false;
+    },
+    
+    addVecinas(celdas){
+     const self = this;
+     self.celdasVecinas = celdas;
+    },
+    
+    consolelog(){
+      const self = this;
+      console.log(self.celdasVecinas);
     }
+  
+
+}
+  
 }
 </script>
 
@@ -50,6 +73,7 @@ export default {
 <style scoped>
 .celda {
   background: rgb(236, 193, 193);
+  border: 1px solid black;
   width: 50px;
   height: 50px;
   position: absolute;
