@@ -12,8 +12,8 @@ const routes = [
     component: Home
   },
   {
-    path: '/buscaminas',
-    name: 'Buscaminas',
+    path: '/buscaminas/lskadmlkmas/alksdmklasd',
+    name: 'Aux',
     component: Buscaminas
   }
 ]

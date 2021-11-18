@@ -93,7 +93,7 @@ export default {
 
     mostrarCelda(){
       const self = this;
-      if (!self.habilitada) return;
+      if (!self.habilitado) return;
       if (self.celdaVisible) return;
 
       self.celdaVisible = true;

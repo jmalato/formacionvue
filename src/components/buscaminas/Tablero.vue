@@ -1,8 +1,8 @@
 <template>
-  <div class="tablero" @explosion="terminaJuego">
+  <div class="tablero">
     <!-- TODO: Incluir celdas -->
     <Celda v-for="(celda, i) in celdas" :key="'celda' + i"
-      ref="celdas"
+      ref="celdas" @explosion="terminaJuego"
       :x="celda.x" :y="celda.y" :mina="celda.mina" :habilitado="!finJuego" :celdasVecinas="celdasVecinas(celda)">
     </Celda>
   </div>
@@ -35,21 +35,20 @@ export default {
       for (let i = 0; i < self.tamano; i++){
         for (let j = 0; j < self.tamano; j++){
           self.celdas.push({
-            mina: Math.random() < 0.10,
             x: i,
             y: j
           })
         }
       }
-
-      forEach(let i = 0; i < self.celdas.length; i++){
-        let nuevaMina = (Math.random() < .5) ? 1 : 0;
-
-        if(self.celda.mina && numeroMina){
-          self.celda.mina = treu;
-          minasRestantes --;
+      let numeroMinas = 10;
+      do {
+        let celdaElegida = Math.floor(Math.random() * self.celdas.length);
+        if(!self.celdas[celdaElegida].mina){
+          self.celdas[celdaElegida].mina = true;
+          numeroMinas--;
         }
-      }
+      } while (numeroMinas > 0);
+
     },
   
    celdasVecinas(celda){
