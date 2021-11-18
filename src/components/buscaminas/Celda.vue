@@ -1,125 +1,123 @@
 <template>
-
-  <div class="celda" :style= "estilos" @click= "mostrarCelda"  > 
-      <div v-if="celdaVisible"> 
-        <img v-if="mina" src="https://is5-ssl.mzstatic.com/image/thumb/Purple124/v4/d0/87/f6/d087f6eb-c54e-5af2-fc92-3c4b656af7e0/source/256x256bb.jpg" >
-        <span v-if= "!mina" class="numero" :class="colorTexto"> {{numeroMinas}} </span>
-      </div>
-      
+  <div class="celda" :style="estilos" @click="mostrarCelda">
+    <div v-if="celdaVisible">
+      <img
+        v-if="mina"
+        src="https://is5-ssl.mzstatic.com/image/thumb/Purple124/v4/d0/87/f6/d087f6eb-c54e-5af2-fc92-3c4b656af7e0/source/256x256bb.jpg"
+      />
+      <span v-if="!mina" class="numero" :class="colorTexto">
+        {{ numeroMinas }}
+      </span>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Celda',
+  name: "Celda",
   data() {
     return {
-      celdasVecinas: [],
-      celdaVisible: false
-    }
+      celdaVisible: false,
+    };
   },
-  props:{
+  props: {
     x: {
-      type: Number
+      type: Number,
     },
     y: {
-      type: Number
+      type: Number,
     },
     mina: {
-      type: Boolean
+      type: Boolean,
     },
     habilitado: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
+    celdasVecinas: {
+      type: Array,
+      default: function () {
+        return [];
+      },
+    },
   },
-  
-  
-  computed:{
-    estilos: function(){
+
+  computed: {
+    estilos: function () {
       const self = this;
-      let cadena = "top: " + (self.x * 50) + "px; left: " + (self.y * 50) + "px";
+      let cadena = "top: " + self.x * 50 + "px; left: " + self.y * 50 + "px";
       return cadena;
     },
-    numeroMinas: function(){
+    numeroMinas: function () {
       const self = this;
-      return self.celdasVecinas.filter(c => c.mina).length;
+      return self.celdasVecinas.filter((c) => c.mina).length;
     },
-    colorTexto: function(){
+    colorTexto: function () {
       const self = this;
 
-      switch(self.numeroMinas){
+      switch (self.numeroMinas) {
         case 1:
-          return 'uno';
+          return "uno";
         case 2:
-          return 'dos';
+          return "dos";
         case 3:
-          return 'tres';
+          return "tres";
         case 4:
-          return 'cuatro';
+          return "cuatro";
         case 5:
-          return 'cinco';
+          return "cinco";
         case 6:
-          return 'seis';
+          return "seis";
         case 7:
-          return 'siete';
+          return "siete";
         case 8:
-          return 'ocho';
+          return "ocho";
       }
-      return '';
-    }
- 
- 
- },
+      return "";
+    },
+  },
 
-  methods:{
-    esVecina(celda){
+  methods: {
+    esVecina(celda) {
       const self = this;
-      if(self.x === celda.x && self.y === celda.y) return false;
-      
-      if(Math.abs(self.x -celda.x) <= 1 && Math.abs(self.y -celda.y) <= 1 ) return true;
+      if (self.x === celda.x && self.y === celda.y) return false;
+
+      if (Math.abs(self.x - celda.x) <= 1 && Math.abs(self.y - celda.y) <= 1)
+        return true;
       return false;
     },
-    
-    addVecinas(celdas){
-     const self = this;
-     self.celdasVecinas = celdas;
-    },
-    
-    consolelog(){
+
+    addVecinas(celdas) {
       const self = this;
-      console.log(self.celdasVecinas);
+      self.celdasVecinas = celdas;
     },
 
-    mostrarCelda(){
+    mostrarCelda() {
       const self = this;
       if (!self.habilitado) return;
       if (self.celdaVisible) return;
 
       self.celdaVisible = true;
 
-      if(self.mina){
-        self.$emit('explosion');
+      if (self.mina) {
+        self.$emit("explosion");
         return;
       }
 
-      if(self.numeroMinas === 0) {
-        self.celdasVecinas.forEach(c => {
-          c.mostrarCelda()
+      if (self.numeroMinas === 0) {
+        self.celdasVecinas.forEach((c) => {
+          c.mostrarCelda();
         });
       }
-    }
-  
-
-}
-  
-}
+    },
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .celda {
-  background: rgb(236, 193, 193);
+  background: #ccc;
   border: 1px solid black;
   width: 50px;
   height: 50px;
@@ -135,29 +133,27 @@ export default {
   font-size: 20px;
 }
 .uno {
-  color:blue;
+  color: blue;
 }
 .dos {
-  color:blue;
+  color: darkblue;
 }
 .tres {
-  color:green;
+  color: green;
 }
 .cuatro {
-  color:grey;
+  color: grey;
 }
 .cinco {
-  color:red;
+  color: red;
 }
 .seis {
-  color:aquamarine;
+  color: aquamarine;
 }
 .siete {
-  color:yellow;
+  color: yellow;
 }
 .ocho {
-  color:orange;
+  color: orange;
 }
-
-
 </style>
