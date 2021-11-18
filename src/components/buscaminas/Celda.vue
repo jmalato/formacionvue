@@ -4,7 +4,7 @@
       <!-- {{x}} | {{y}} | {{mina}} -->
 
       <img v-if="mina" src="https://is5-ssl.mzstatic.com/image/thumb/Purple124/v4/d0/87/f6/d087f6eb-c54e-5af2-fc92-3c4b656af7e0/source/256x256bb.jpg" >
-      <span v-if= "!mina"> {{numeroMinas}} </span>
+      <span v-if= "!mina" class="numero"> {{numeroMinas}} </span>
       
   </div>
 </template>
@@ -81,5 +81,10 @@ export default {
 .celda img {
   width: 50px;
   height: 50px;
+}
+.celda .numero {
+  line-height: 50px;
+  font-weight: bold;
+  font-size: 20px;
 }
 </style>
