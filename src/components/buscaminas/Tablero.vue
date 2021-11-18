@@ -1,9 +1,9 @@
 <template>
-  <div class="tablero">
+  <div class="tablero" @explosion="terminaJuego">
     <!-- TODO: Incluir celdas -->
     <Celda v-for="(celda, i) in celdas" :key="'celda' + i"
       ref="celdas"
-      :x="celda.x" :y="celda.y" :mina="celda.mina" :celdasVecinas="celdasVecinas(celda)">
+      :x="celda.x" :y="celda.y" :mina="celda.mina" :habilitado="!finJuego" :celdasVecinas="celdasVecinas(celda)">
     </Celda>
   </div>
 </template>
@@ -19,6 +19,7 @@ export default {
   data() {
     return {
       celdas: [],
+      finJuego: false
     }
   },
   props:{
@@ -40,6 +41,15 @@ export default {
           })
         }
       }
+
+      forEach(let i = 0; i < self.celdas.length; i++){
+        let nuevaMina = (Math.random() < .5) ? 1 : 0;
+
+        if(self.celda.mina && numeroMina){
+          self.celda.mina = treu;
+          minasRestantes --;
+        }
+      }
     },
   
    celdasVecinas(celda){
@@ -49,6 +59,15 @@ export default {
      console.log(tvariable);
      return tvariable;
      }
+    },
+
+    terminaJuego(){
+      const self = this;
+      self.$refs.celdas.filter(c => c.mina).forEach(c => {
+        c.mostrarCelda()
+      });
+      //console.log('FIN')
+      self.finJuego = true;
     },
   },
   
