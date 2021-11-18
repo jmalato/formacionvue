@@ -2,8 +2,8 @@
   <div class="tablero">
     <!-- TODO: Incluir celdas -->
     <Celda v-for="(celda, i) in celdas" :key="'celda' + i"
-      ref="celdas"
-      :x="celda.x" :y="celda.y" :mina="celda.mina" :celdasVecinas="celdasVecinas(celda)">
+      ref="celdas" @explosion="terminaJuego"
+      :x="celda.x" :y="celda.y" :mina="celda.mina" :habilitado="!finJuego" :celdasVecinas="celdasVecinas(celda)">
     </Celda>
   </div>
 </template>
@@ -19,6 +19,7 @@ export default {
   data() {
     return {
       celdas: [],
+      finJuego: false
     }
   },
   props:{
@@ -34,12 +35,20 @@ export default {
       for (let i = 0; i < self.tamano; i++){
         for (let j = 0; j < self.tamano; j++){
           self.celdas.push({
-            mina: Math.random() < 0.10,
             x: i,
             y: j
           })
         }
       }
+      let numeroMinas = 10;
+      do {
+        let celdaElegida = Math.floor(Math.random() * self.celdas.length);
+        if(!self.celdas[celdaElegida].mina){
+          self.celdas[celdaElegida].mina = true;
+          numeroMinas--;
+        }
+      } while (numeroMinas > 0);
+
     },
   
    celdasVecinas(celda){
@@ -49,6 +58,15 @@ export default {
      console.log(tvariable);
      return tvariable;
      }
+    },
+
+    terminaJuego(){
+      const self = this;
+      self.$refs.celdas.filter(c => c.mina).forEach(c => {
+        c.mostrarCelda()
+      });
+      //console.log('FIN')
+      self.finJuego = true;
     },
   },
   

@@ -1,10 +1,10 @@
 <template>
-  <div class="celda" :style= "estilos" @click= "consolelog"  > 
-    <!-- TODO: Incluir celdas -->
-      <!-- {{x}} | {{y}} | {{mina}} -->
 
-      <img v-if="mina" src="https://is5-ssl.mzstatic.com/image/thumb/Purple124/v4/d0/87/f6/d087f6eb-c54e-5af2-fc92-3c4b656af7e0/source/256x256bb.jpg" >
-      <span v-if= "!mina" class="numero"> {{numeroMinas}} </span>
+  <div class="celda" :style= "estilos" @click= "mostrarCelda"  > 
+      <div v-if="celdaVisible"> 
+        <img v-if="mina" src="https://is5-ssl.mzstatic.com/image/thumb/Purple124/v4/d0/87/f6/d087f6eb-c54e-5af2-fc92-3c4b656af7e0/source/256x256bb.jpg" >
+        <span v-if= "!mina" class="numero" :class="colorTexto"> {{numeroMinas}} </span>
+      </div>
       
   </div>
 </template>
@@ -15,6 +15,7 @@ export default {
   data() {
     return {
       celdasVecinas: [],
+      celdaVisible: false
     }
   },
   props:{
@@ -27,6 +28,10 @@ export default {
     mina: {
       type: Boolean
     },
+    habilitado: {
+      type: Boolean,
+      default: true
+    }
   },
   
   
@@ -40,6 +45,29 @@ export default {
       const self = this;
       return self.celdasVecinas.filter(c => c.mina).length;
     },
+    colorTexto: function(){
+      const self = this;
+
+      switch(self.numeroMinas){
+        case 1:
+          return 'uno';
+        case 2:
+          return 'dos';
+        case 3:
+          return 'tres';
+        case 4:
+          return 'cuatro';
+        case 5:
+          return 'cinco';
+        case 6:
+          return 'seis';
+        case 7:
+          return 'siete';
+        case 8:
+          return 'ocho';
+      }
+      return '';
+    }
  
  
  },
@@ -61,6 +89,25 @@ export default {
     consolelog(){
       const self = this;
       console.log(self.celdasVecinas);
+    },
+
+    mostrarCelda(){
+      const self = this;
+      if (!self.habilitado) return;
+      if (self.celdaVisible) return;
+
+      self.celdaVisible = true;
+
+      if(self.mina){
+        self.$emit('explosion');
+        return;
+      }
+
+      if(self.numeroMinas === 0) {
+        self.celdasVecinas.forEach(c => {
+          c.mostrarCelda()
+        });
+      }
     }
   
 
@@ -87,4 +134,30 @@ export default {
   font-weight: bold;
   font-size: 20px;
 }
+.uno {
+  color:blue;
+}
+.dos {
+  color:blue;
+}
+.tres {
+  color:green;
+}
+.cuatro {
+  color:grey;
+}
+.cinco {
+  color:red;
+}
+.seis {
+  color:aquamarine;
+}
+.siete {
+  color:yellow;
+}
+.ocho {
+  color:orange;
+}
+
+
 </style>
