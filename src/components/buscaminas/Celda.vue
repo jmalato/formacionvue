@@ -18,6 +18,7 @@ export default {
   data() {
     return {
       celdaVisible: false,
+      celdasVecinas: [],
     };
   },
   props: {
@@ -33,12 +34,6 @@ export default {
     habilitado: {
       type: Boolean,
       default: true,
-    },
-    celdasVecinas: {
-      type: Array,
-      default: function () {
-        return [];
-      },
     },
   },
 
