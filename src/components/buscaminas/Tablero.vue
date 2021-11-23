@@ -1,17 +1,22 @@
 <template>
   <div class="tablero">
-    <!-- TODO: Incluir celdas -->
-    <Celda
-      v-for="(celda, i) in celdas"
-      :key="'celda' + i"
-      ref="celdas"
-      @explosion="terminaJuego"
-      :x="celda.x"
-      :y="celda.y"
-      :mina="celda.mina"
-      :habilitado="!finJuego"
-    >
-    </Celda>
+    <div class="controles">
+      <input v-model="celdasAbiertas" />
+    </div>
+    <div class="contenedor-celdas">
+      <Celda
+        v-for="(celda, i) in celdas"
+        :key="'celda' + i"
+        ref="celdas"
+        @explosion="terminaJuego"
+        @celdaMostrada="nuevaCeldaMostrada"
+        :x="celda.x"
+        :y="celda.y"
+        :mina="celda.mina"
+        :habilitado="!finJuego"
+      >
+      </Celda>
+    </div>
   </div>
 </template>
 
@@ -26,6 +31,7 @@ export default {
   data() {
     return {
       celdas: [],
+      celdasAbiertas: 0,
       finJuego: false,
       tableroVisible: false,
     };
@@ -67,6 +73,11 @@ export default {
       return [];
     },
 
+    nuevaCeldaMostrada() {
+      const self = this;
+      self.celdasAbiertas++;
+    },
+
     terminaJuego() {
       const self = this;
       self.$refs.celdas
@@ -74,7 +85,12 @@ export default {
         .forEach((c) => {
           c.mostrarCelda();
         });
-      self.finJuego = true;
+      if (!self.finJuego) {
+        self.finJuego = true;
+        setTimeout(function () {
+          self.$router.push(`/gameover/${self.celdasAbiertas}/`);
+        }, 3000);
+      }
     },
   },
 
@@ -100,6 +116,9 @@ export default {
   background: lightgray;
   width: 500px;
   height: 500px;
+  position: relative;
+}
+.contenedor-celdas {
   position: relative;
 }
 </style>
