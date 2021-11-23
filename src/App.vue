@@ -2,9 +2,10 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link :to="{name:'Aux'}">Buscaminas</router-link>
+      <router-link :to="{ name: 'Buscaminas' }">Buscaminas</router-link> |
+      <router-link to="/gameover">Pantalla final</router-link>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 

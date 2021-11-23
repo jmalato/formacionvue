@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Buscaminas from '../views/Buscaminas.vue'
+import GameOver from '../views/GameOver.vue'
 
 Vue.use(VueRouter)
 
@@ -12,9 +13,20 @@ const routes = [
     component: Home
   },
   {
-    path: '/buscaminas/lskadmlkmas/alksdmklasd',
-    name: 'Aux',
+    path: '/buscaminas',
+    name: 'Buscaminas',
     component: Buscaminas
+  },
+  {
+    path: '/gameover/',
+    name: 'GameOver',
+    component: GameOver
+  },
+  {
+    path: '/gameover/:celdasAbiertas/',
+    name: 'GameOver',
+    component: GameOver,
+    props: true
   }
 ]
 

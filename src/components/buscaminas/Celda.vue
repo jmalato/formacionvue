@@ -93,6 +93,7 @@ export default {
       if (self.celdaVisible) return;
 
       self.celdaVisible = true;
+      self.$emit("celdaMostrada");
 
       if (self.mina) {
         self.$emit("explosion");
