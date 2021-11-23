@@ -1,11 +1,10 @@
 <template>
-  <div class="celda" :style= "estilos" @click= "consolelog"  > 
-    <!-- TODO: Incluir celdas -->
-      <!-- {{x}} | {{y}} | {{mina}} -->
-
+  <div class="celda" :style= "estilos" @click= "mostrarCelda"  > 
+   
+     <div v-if="celdaVisible">
       <img v-if="mina" src="https://is5-ssl.mzstatic.com/image/thumb/Purple124/v4/d0/87/f6/d087f6eb-c54e-5af2-fc92-3c4b656af7e0/source/256x256bb.jpg" >
       <span v-if= "!mina" class="numero"> {{numeroMinas}} </span>
-      
+     </div>
   </div>
 </template>
 
@@ -15,6 +14,7 @@ export default {
   data() {
     return {
       celdasVecinas: [],
+      celdaVisible: false
     }
   },
   props:{
@@ -61,10 +61,24 @@ export default {
     consolelog(){
       const self = this;
       console.log(self.celdasVecinas);
-    }
-  
+    },
+     mostrarCelda(){
+      const self = this;
+      if(self.mina) {
+        emit "explosion";
+        return;
+      }
+      if(self.celdaVisible) return;
 
-}
+      self.celdaVisible = true;
+ 
+      if(self.numeroMinas===0) {
+        self.celdasVecinas.forEach(c => {
+          c.mostrarCelda()
+        })
+      }
+     }
+  }
   
 }
 </script>

@@ -1,9 +1,9 @@
 <template>
-  <div class="tablero">
+  <div class="tablero" >
     <!-- TODO: Incluir celdas -->
     <Celda v-for="(celda, i) in celdas" :key="'celda' + i"
       ref="celdas"
-      :x="celda.x" :y="celda.y" :mina="celda.mina" :celdasVecinas="celdasVecinas(celda)">
+      :x="celda.x" :y="celda.y" :mina="celda.mina" :celdasVecinas="celdasVecinas(celda)" @explosion="terminarJuego">
     </Celda>
   </div>
 </template>
@@ -42,6 +42,12 @@ export default {
       }
     },
   
+     terminajuego(){
+     const self = this;
+     if(self.mina){
+       consolelog "termina juego";
+     }
+    },
    celdasVecinas(celda){
      const self = this;
      if(self.$refs.celdas){
